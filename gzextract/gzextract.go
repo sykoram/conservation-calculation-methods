@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	filepath2 "path/filepath"
 	"regexp"
 	"strings"
 )
@@ -154,9 +155,14 @@ func closeGzipReader(r *gzip.Reader) {
 }
 
 /*
-Creates or truncates file using os.Create(). Potential error is handled. The file has to be closed manually!
+Creates a directory path. Creates or truncates file using os.Create(). Potential error is handled. The file has to be closed manually!
  */
 func createFile(filepath string) *os.File {
+	err := os.MkdirAll(filepath2.Dir(filepath), 666)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	file, err := os.Create(filepath)
 	if err != nil {
 		log.Fatal(err)
