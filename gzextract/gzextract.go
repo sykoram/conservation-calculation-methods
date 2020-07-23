@@ -75,26 +75,19 @@ Checks the flags and arguments. If something is not right, fatal error is produc
 -i and -o flags are required, any additional arguments are forbidden.
  */
 func checkCmd() {
-	fatal := false
-
 	if ifile == "" {
-		fmt.Println("[ERROR] The input file path is required: -i path/to/file")
-		fatal = true
+		log.Println("[ERROR] The input file path is required: -i path/to/file")
+		defer os.Exit(1)
 	}
 
 	if ofile == "" {
-		fmt.Println("[ERROR] The output file path is required: -o path/to/file")
-		fatal = true
+		log.Println("[ERROR] The output file path is required: -o path/to/file")
+		defer os.Exit(1)
 	}
 
 	if flag.NArg() > 0 {
-		fmt.Println("[ERROR] Unknown arguments: " + strings.Join(flag.Args(), " "))
-		fatal = true
-	}
-
-	if fatal {
-		fmt.Println("See -h or -help for description and usage")
-		os.Exit(1)
+		log.Println("[ERROR] Unknown arguments: " + strings.Join(flag.Args(), " "))
+		defer os.Exit(1)
 	}
 }
 
