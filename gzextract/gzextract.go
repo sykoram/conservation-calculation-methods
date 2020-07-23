@@ -63,11 +63,7 @@ func main() {
 			writeMsaColumn(writer, msa)
 		}
 	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+	checkScannerForErr(scanner)
 }
 
 /*
@@ -196,6 +192,15 @@ func writeMsaColumn(w *bufio.Writer, msa string) {
 
 	err = w.Flush()
 	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+/*
+Checks the scanner for errors. Fatal error is produced when there is some.
+ */
+func checkScannerForErr(s *bufio.Scanner) {
+	if err := s.Err(); err != nil {
 		log.Fatal(err)
 	}
 }
