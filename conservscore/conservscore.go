@@ -30,8 +30,8 @@ func init() {
 	flag.BoolVar(&help, "h", false, "")
 	flag.BoolVar(&help, "help", false, "")
 
-	flag.StringVar(&ifile, "i", "", "input file path (with MSA columns; may be .gz) (required)")
-	flag.StringVar(&ofile, "o", "", "Output file path (required)")
+	flag.StringVar(&ifile, "i", "", "input file path (can be .gz) (required)")
+	flag.StringVar(&ofile, "o", "", "output file path (gzipped if with .gz extension) (required)")
 	flag.StringVar(&methodId, "m", "", fmt.Sprintf("conservation calculation method (required) %s", GetMethodNames()))
 
 	flag.StringVar(&validLineRegex, "r", validLineRegex, "regex that matches a valid line where a MSA column is")
@@ -62,7 +62,15 @@ func main() {
 	fo, err := createFile(ofile)
 	fatalIfErr(err)
 	defer fatalIfErrF(fo.Close)
-	writer := bufio.NewWriter(fo)
+
+	var writer *bufio.Writer
+	if filepath2.Ext(ofile) == ".gz" {
+		gzw := gzip.NewWriter(fo)
+		defer fatalIfErrF(gzw.Close)
+		writer = bufio.NewWriter(gzw)
+	} else {
+		writer = bufio.NewWriter(fo)
+	}
 
 	// get method
 	method, ok := Methods[methodId]
