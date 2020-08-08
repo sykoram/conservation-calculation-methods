@@ -2,7 +2,7 @@
 
 # This script runs conservscore program for each file in a directory
 
-set -o errexit  # Used to exit upon error, avoiding cascading errors
+#set -o errexit  # Used to exit upon error, avoiding cascading errors
 
 #WORK_DIR="$(pwd)"
 SCRIPT_DIR="${0%/*}"
@@ -15,7 +15,7 @@ in
 i) IN_DIR=${OPTARG};;
 o) OUT_DIR=${OPTARG};;
 m) METHOD=${OPTARG};;
-*) echo "Invalid flag -${option}" ; exit 1;;
+*) echo "Invalid flag" ; exit 1;;
 esac
 done
 
@@ -36,13 +36,13 @@ fi
 # build Go program
 echo "Building conservscore..."
 CONSERVSCORE="$SCRIPT_DIR/conservscore/conservscore"
-(cd "${CONSERVSCORE%/*}"; go build -o conservscore ./conservscore.go ./methods.go)
+(cd "${CONSERVSCORE%/*}" && go build -o conservscore ./conservscore.go ./methods.go || exit 1)
 
 # main loop
 for IN_FILEPATH in "$IN_DIR"/*.gz; do
   FILE="${IN_FILEPATH##*/}"  # filepath -> filename (./path/to/___.pdb.seq.fasta.hom.gz  ->  ___.pdb.seq.fasta.hom.gz)
   echo "Processing $FILE..."
-  $CONSERVSCORE -i "$IN_DIR/$FILE" -o "$OUT_DIR/${FILE%.gz}" -m "$METHOD"
+  $CONSERVSCORE -i "$IN_DIR/$FILE" -o "$OUT_DIR/$FILE" -m "$METHOD" # the output file will be gzipped
 done
 
 echo "Done!"
