@@ -6,6 +6,7 @@
 
 #WORK_DIR="$(pwd)"
 SCRIPT_DIR="${0%/*}"
+CONSERVSCORE="$SCRIPT_DIR/conservscore"
 
 # handle flags
 while getopts :i:o:m: option
@@ -32,11 +33,6 @@ fi
 if [[ $EXIT ]]; then
   exit 1
 fi
-
-# build Go program
-echo "Building conservscore..."
-CONSERVSCORE="$SCRIPT_DIR/conservscore/conservscore"
-(cd "${CONSERVSCORE%/*}" && go build -o conservscore ./conservscore.go ./methods.go || exit 1)
 
 # main loop
 for IN_FILEPATH in "$IN_DIR"/*.gz; do
