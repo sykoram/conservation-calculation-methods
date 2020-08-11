@@ -18,11 +18,14 @@ import (
 	"strings"
 )
 
+const replaceNegScore0 = true
+
 var help bool
 var ifile string
 var ofile string
 
 var methodId string
+var window int
 var validLineRegex = "^(\\d+)\\t(-?\\d+(?:\\.\\d+)?)\\t([A-Z\\-]+)$" // matches line <colNum>\t<score>\t<msaCol>
 var msaCaptureGroup = 3  // which group should be captured (first is 1; 0 is the whole match)
 
@@ -34,6 +37,7 @@ func init() {
 	flag.StringVar(&ofile, "o", "", "output file path (gzipped if with .gz extension) (required)")
 	flag.StringVar(&methodId, "m", "", fmt.Sprintf("conservation calculation method (required) %s", GetMethodNames()))
 
+	flag.IntVar(&window, "w", 0, "window size (number of residues on each side included in the window)")
 	flag.StringVar(&validLineRegex, "r", validLineRegex, "regex that matches a valid line where a MSA column is")
 	flag.IntVar(&msaCaptureGroup, "g", msaCaptureGroup, "capture group of the valid-line regex -r (0 is the whole match; 1st group is 1)")
 }
@@ -78,19 +82,41 @@ func main() {
 		log.Fatal("Unknown method identifier.")
 	}
 
-	// main loop: read a line, find MSA column, calculate conservation score, save to output file
+	// read input file and extract all MSA columns
 	i := 0
+	msaCols := make([]MsaColumn, 0)
 	for scanner.Scan() {
-		msaColumn, err := extractMsaColumn(scanner.Text(), validLineRegex, msaCaptureGroup)
+		col, err := extractMsaColumn(scanner.Text(), validLineRegex, msaCaptureGroup)
 		fatalIfErr(err)
-		if msaColumn == "" {
+		if col == "" {
 			continue
 		}
-		score := method(msaColumn)
-		_, err = writer.WriteString(fmt.Sprintf("%d\t%.5f\t%s\n", i, score, msaColumn)) // the format of the output line is <colNum>\t<score>\t<msaCol>
-		fatalIfErr(err)
+		msaCols = append(msaCols, col)
 		i++
 	}
+
+	// calculate score, save to output file
+	seqWeights := GetSequenceWeights(msaCols)
+	scores := make([]float64, len(msaCols))
+	for i, col := range msaCols {
+		scores[i] = -1000.0
+		if GetGapRatio(col) <= MaxGapRatio {
+			scores[i] = method(col, Blosum62SimMatrix, Blosum62BgDistr, seqWeights)
+		}
+	}
+
+	if window > 0 {
+		scores = WindowScores(scores, window, WindowLam)
+	}
+
+	for i, col := range msaCols {
+		if replaceNegScore0 && scores[i] < 0 {
+			scores[i] = 0
+		}
+		_, err = writer.WriteString(fmt.Sprintf("%d\t%.5f\t%s\n", i, scores[i], col)) // the format of the output line is <colNum>\t<score>\t<msaCol>
+		fatalIfErr(err)
+	}
+
 	fatalIfErr(writer.Flush())
 	fatalIfErrF(scanner.Err)
 }

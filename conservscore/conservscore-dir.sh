@@ -9,13 +9,15 @@ SCRIPT_DIR="${0%/*}"
 CONSERVSCORE="$SCRIPT_DIR/conservscore"
 
 # handle flags
-while getopts :i:o:m: option
+WINDOW=0
+while getopts :i:o:m:w: option
 do
 case "${option}"
 in
 i) IN_DIR=${OPTARG};;
 o) OUT_DIR=${OPTARG};;
 m) METHOD=${OPTARG};;
+w) WINDOW=${OPTARG};;
 *) echo "Invalid flag" ; exit 1;;
 esac
 done
@@ -38,7 +40,7 @@ fi
 for IN_FILEPATH in "$IN_DIR"/*.gz; do
   FILE="${IN_FILEPATH##*/}"  # filepath -> filename (./path/to/___.pdb.seq.fasta.hom.gz  ->  ___.pdb.seq.fasta.hom.gz)
   echo "Processing $FILE..."
-  $CONSERVSCORE -i "$IN_DIR/$FILE" -o "$OUT_DIR/$FILE" -m "$METHOD" # the output file will be gzipped
+  $CONSERVSCORE -i "$IN_DIR/$FILE" -o "$OUT_DIR/$FILE" -m "$METHOD" -w "$WINDOW" # the output file will be gzipped
 done
 
 echo "Done!"

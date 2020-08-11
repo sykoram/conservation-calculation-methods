@@ -20,17 +20,15 @@ Since conservscore-dir script is a Bash script, you may need to be on Linux, hav
 
 ## Usage
 
-Use flag `-h` or `-help` to display help.
+Use flag `-h` or `-help` to display help (and also all supported methods).
 
-To calculate conservation scores, specify input file, output file and method.
+To calculate conservation scores, specify input file, output file and method. Window is optional.
 
 ```sh
-./conservscore -i INPUT_FILE -o OUTPUT_FILE -m METHOD
+./conservscore -i INPUT_FILE -o OUTPUT_FILE -m METHOD [-w WINDOW]
 ```
 
 If the input file name has a `.gz` extension, it is automatically decompressed. Similarly, the output file is compressed. 
-
-Currently available methods are: zero
 
 By default, the MSA column is extracted from a line in format `<colNum>\t<score>\t<msaCol>` where `<colNum>` is an integer, `<score>` is a floating point number and `<msaCol>` is a sequence of letters or dashes.
 
@@ -38,8 +36,8 @@ To use this program with different formats, a custom regular expression and a ca
 Flag `-r` sets a regular expression. \
 Flag `-g` sets a capture group. It is an integer: 0 is the whole match, 1 is the first capture group of the regular expression.
 
-**conservscore script** supports only input directory, output directory and method, but it should be easy to modify the script if you want to use the `-r` and `-g` flags.
+**conservscore-dir script** supports only input directory, output directory and method, but it should be easy to modify it if you want to use the `-r` and `-g` flags.
 
 ```sh
-./conservscore-dir.sh -i INPUT_DIR -o OUTPUT_DIR -m METHOD
+./conservscore-dir.sh -i INPUT_DIR -o OUTPUT_DIR -m METHOD [-w WINDOW]
 ```
