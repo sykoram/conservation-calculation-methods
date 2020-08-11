@@ -61,10 +61,28 @@ time YOUR_COMMAND 2>&1 | tee log/test.log
 | Model (method)             | DCA(4.0) [0] | DCA(4.0) [2] |
 | -------------------------- | ------------ | ------------ |
 | Without conservation       | 68.3         | 72.6         |
-| Default conservation       | 72.0         | 75.4         |
+| Default conservation files | 72.0         | 75.4         |
 | Zero                       | 68.4         | 72.6         |
 | Shannon entropy (window 0) | 72.2         | 76.5         |
 | Shannon entropy (window 3) | 71.6         | 75.1         |
+
+All models were trained and evaluated with the following configuration:
+- P2Rank:
+  - configuration file: config/conservation (not for the test without conservation)
+  - traineval training dataset: chen11.ds
+  - traineval evaluation dataset: coach420(mlig).ds
+  - loop: 10 (trains 10 models, each with a different seed)
+  - seed: 42 (first seed)
+  - rf_trees: 200
+- conservscore:
+  - pseudocount: 10e-6 (0.000001)
+  - similarity matrix and background distribution: BLOSUM62
+  - use sequence weights: true
+  - max. gap percentage: 30%
+  - use gap penalty: true
+  - window lam: 0.5
+  - replace negative scores with 0: true
+
 
 
 
