@@ -11,6 +11,7 @@ This project is for [Matfyz Summer of Code 2020 (cz)](https://d3s.mff.cuni.cz/ms
 - [Background](#background)
 - [Setup](#setup)
 - [Usage](#usage)
+- [Results](#results)
 ## Background
 
 The function of proteins depends on their interactions with other molecules. Really important is an interaction between proteins and small molecules (=ligands). Lots of today's drugs are small molecules, which inhibit the function of some protein by binding to its active site.
@@ -55,6 +56,15 @@ time YOUR_COMMAND 2>&1 | tee log/test.log
 
 
 
+## Results
+
+| Model (method)             | DCA(4.0) [0] | DCA(4.0) [2] |
+| -------------------------- | ------------ | ------------ |
+| Without conservation       | 68.3         | 72.6         |
+| Default conservation       | 72.0         | 75.4         |
+| Zero                       | 68.4         | 72.6         |
+| Shannon entropy (window 0) | 72.2         | 76.5         |
+| Shannon entropy (window 3) | 71.6         | 75.1         |
 
 
 
