@@ -23,6 +23,7 @@ var Methods = map[string]MethodFunc{
 	"zero": Zero,
 	"shannon-entropy": ShannonEntropy,
 	"property-entropy": ShannonPropertyEntropy,
+	"jensen-shannon-divergence": JensenShannonDivergence,
 }
 
 var AminoAcids = []Aa{'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V', '-'}
@@ -129,6 +130,48 @@ func ShannonPropertyEntropy(col MsaColumn, simMatrix SimilarityMatrix, bgDistr [
 	h *= -1
 
 	score := 1 - h
+	if UseGapPenalty {
+		return score * GetWeightedGapPenalty(col, seqWeights)
+	}
+	return score
+}
+
+/*
+Calculates the Jensen-Shannon Divergence for the column with the background distribution bg_distr. sim_matrix is ignored.
+*/
+func JensenShannonDivergence(col MsaColumn, simMatrix SimilarityMatrix, bgDistr []float64, seqWeights []float64) float64 {
+	wfc := GetWeightedFrequencyCount(col, seqWeights, Pseudocount)
+	if len(wfc) == len(bgDistr) + 1 {  // todo: len(wfc) == len(bgDistr) + 1
+		// remove gap count (last element)
+		wfc = wfc[:len(wfc)-1]
+		sum := sumFloat64s(wfc)
+		for i := range wfc {
+			wfc[i] = wfc[i] / sum
+		}
+	}
+
+	// make r distribution
+	r := make([]float64, len(wfc))
+	lam := 0.5
+	for i, p := range wfc {
+		r[i] = lam * p + (1 - lam) * bgDistr[i]
+	}
+
+	d := 0.0
+	for i, p := range wfc {
+		q := bgDistr[i]
+		if r[i] != 0 {
+			if p != 0 {
+				d += p * math.Log2(p / r[i])  // binary logarithm -> score [0,1]
+			}
+			if q != 0 {
+				d += q * math.Log2(q / r[i])
+			}
+		}
+	}
+	d /= 2
+
+	score := d
 	if UseGapPenalty {
 		return score * GetWeightedGapPenalty(col, seqWeights)
 	}

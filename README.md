@@ -58,15 +58,17 @@ time YOUR_COMMAND 2>&1 | tee log/test.log
 
 ## Results
 
-| Model / Method             | DCA(4.0) [0] | DCA(4.0) [2] |
-| -------------------------- | ------------ | ------------ |
-| Without conservation       | 68.3         | 72.6         |
-| Default conservation files | 72.0         | 75.4         |
-| Zero                       | 68.4         | 72.6         |
-| Shannon entropy            | 72.2         | 76.5         |
-| Shannon entropy (w3)       | 71.6         | 75.1         |
-| Property entropy           | 72.7         | 76.3         |
-| Property entropy (w3)      | 71.9         | 75.3         |
+| Model / Method                 | DCA(4.0) [0] | DCA(4.0) [2] |
+| ------------------------------ | ------------ | ------------ |
+| Without conservation           | 68.3         | 72.6         |
+| Default conservation files     | 72.0         | 75.4         |
+| Zero                           | 68.4         | 72.6         |
+| Shannon entropy                | 72.2         | 76.5         |
+| Shannon entropy (w3)           | 71.6         | 75.1         |
+| Property entropy               | 72.7         | 76.3         |
+| Property entropy (w3)          | 71.9         | 75.3         |
+| Jensen-Shannon divergence      | 73.4         | 77.5         |
+| Jensen-Shannon divergence (w3) | 72.2         | 75.6         |
 
 w3 = 3 residues on either side included in the window
 
