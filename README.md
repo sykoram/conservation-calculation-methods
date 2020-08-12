@@ -58,15 +58,22 @@ time YOUR_COMMAND 2>&1 | tee log/test.log
 
 ## Results
 
-| Model (method)             | DCA(4.0) [0] | DCA(4.0) [2] |
+| Model / Method             | DCA(4.0) [0] | DCA(4.0) [2] |
 | -------------------------- | ------------ | ------------ |
 | Without conservation       | 68.3         | 72.6         |
 | Default conservation files | 72.0         | 75.4         |
 | Zero                       | 68.4         | 72.6         |
-| Shannon entropy (window 0) | 72.2         | 76.5         |
-| Shannon entropy (window 3) | 71.6         | 75.1         |
+| Shannon entropy            | 72.2         | 76.5         |
+| Shannon entropy (w3)       | 71.6         | 75.1         |
+| Property entropy           | 72.7         | 76.3         |
+| Property entropy (w3)      | 71.9         | 75.3         |
 
-All models were trained and evaluated with the following configuration:
+w3 = 3 residues on either side included in the window
+
+Shannon entropy = Shannon entropy of residues \
+Property entropy = Shannon entropy of residue properties
+
+Following configuration was used:
 - P2Rank:
   - configuration file: config/conservation (not for the test without conservation)
   - traineval training dataset: chen11.ds
@@ -74,7 +81,7 @@ All models were trained and evaluated with the following configuration:
   - loop: 10 (trains 10 models, each with a different seed)
   - seed: 42 (first seed)
   - rf_trees: 200
-- conservscore:
+- conservscore: (not for the default conservation files; methods may ignore something)
   - pseudocount: 10e-6 (0.000001)
   - similarity matrix and background distribution: BLOSUM62
   - use sequence weights: true

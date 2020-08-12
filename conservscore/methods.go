@@ -22,6 +22,7 @@ type MethodFunc func(col MsaColumn, simMatrix SimilarityMatrix, bgDistr []float6
 var Methods = map[string]MethodFunc{
 	"zero": Zero,
 	"shannon-entropy": ShannonEntropy,
+	"property-entropy": ShannonPropertyEntropy,
 }
 
 var AminoAcids = []Aa{'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V', '-'}
@@ -81,7 +82,7 @@ func Zero(col MsaColumn, simMatrix SimilarityMatrix, bgDistr []float64, seqWeigh
 }
 
 /*
-Calculates the Shannon entropy of the column. simMatrix and bgDistr are ignored.
+Calculates the Shannon entropy (of residues) of the column. simMatrix and bgDistr are ignored.
 If UseGapPenalty is true, then gaps are penalized.
 The entropy will be between zero and one because of its base. See p.13 of Valdar 02 for details.
 The information score 1 - h is returned for the sake of consistency with other scores.
@@ -94,6 +95,37 @@ func ShannonEntropy(col MsaColumn, simMatrix SimilarityMatrix, bgDistr []float64
 		h += c * math.Log(c)  // xxx: what base should be used? 2 / e / 10
 	}
 	h /= math.Log(math.Min(float64(len(wfc)), float64(len(col))))
+	h *= -1
+
+	score := 1 - h
+	if UseGapPenalty {
+		return score * GetWeightedGapPenalty(col, seqWeights)
+	}
+	return score
+}
+
+/*
+Calculates the Shannon entropy (of residue properties) of a column col relative to a partition of the amino acids.
+Similar to Mirny '99. sim_matrix and bg_distr are ignored.
+The information score 1 - h is returned for the sake of consistency with other scores.
+*/
+func ShannonPropertyEntropy(col MsaColumn, simMatrix SimilarityMatrix, bgDistr []float64, seqWeights []float64) float64 {
+	propertyPartition := [][]Aa{{'A','V','L','I','M','C'}, {'F','W','Y','H'}, {'S','T','N','Q'}, {'K','R'}, {'D', 'E'}, {'G', 'P'}, {'-'}}
+	wfc := GetWeightedFrequencyCount(col, seqWeights, Pseudocount)
+
+	// sum AA frequencies -> property frequencies
+	propertyWfc := make([]float64, len(propertyPartition))
+	for p := range propertyWfc {
+		for _, aa := range propertyPartition[p] {
+			propertyWfc[p] += wfc[AaToIndex[aa]]
+		}
+	}
+
+	h := 0.0
+	for _, c := range propertyWfc {
+		h += c * math.Log(c)
+	}
+	h /= math.Log(math.Min(float64(len(propertyWfc)), float64(len(col))))
 	h *= -1
 
 	score := 1 - h
