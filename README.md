@@ -63,7 +63,6 @@ time YOUR_COMMAND 2>&1 | tee log/test.log
 | ------------------------------ | ------------ | ------------ |
 | Without conservation           | 68.3         | 72.6         |
 | Default conservation files     | 72.0         | 75.4         |
-| Zero                           | 68.4         | 72.6         |
 | Shannon entropy                | 72.2         | 76.5         |
 | Shannon entropy (w3)           | 71.6         | 75.1         |
 | Property entropy               | 72.7         | 76.3         |
