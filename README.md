@@ -67,6 +67,8 @@ time YOUR_COMMAND 2>&1 | tee log/test.log
 | Shannon entropy (w3)           | 71.6         | 75.1         |
 | Property entropy               | 72.7         | 76.3         |
 | Property entropy (w3)          | 71.9         | 75.3         |
+| Relative entropy               | 73.7         | 77.8         |
+| Relative entropy (w3)          | 72.0         | 76.0         |
 | Jensen-Shannon divergence      | 73.4         | 77.5         |
 | Jensen-Shannon divergence (w3) | 72.2         | 75.6         |
 

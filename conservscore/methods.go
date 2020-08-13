@@ -23,6 +23,7 @@ var Methods = map[string]MethodFunc{
 	"zero": Zero,
 	"shannon-entropy": ShannonEntropy,
 	"property-entropy": ShannonPropertyEntropy,
+	"relative-entropy": RelativeEntropy,
 	"jensen-shannon-divergence": JensenShannonDivergence,
 }
 
@@ -130,6 +131,35 @@ func ShannonPropertyEntropy(col MsaColumn, simMatrix SimilarityMatrix, bgDistr [
 	h *= -1
 
 	score := 1 - h
+	if UseGapPenalty {
+		return score * GetWeightedGapPenalty(col, seqWeights)
+	}
+	return score
+}
+
+/*
+Calculates the relative entropy of the column distribution with a background distribution specified in bg_distr.
+This is similar to the approach proposed in Wang and Samudrala 06. sim_matrix is ignored.
+Note: the score can be >1
+*/
+func RelativeEntropy(col MsaColumn, simMatrix SimilarityMatrix, bgDistr []float64, seqWeights []float64) float64 {
+	wfc := GetWeightedFrequencyCount(col, seqWeights, Pseudocount)
+	if len(bgDistr) == 20 && len(wfc) == 21 {
+		// remove gap count (last element)
+		wfc = wfc[:len(wfc)-1]
+		sum := sumFloat64s(wfc)
+		for i := range wfc {
+			wfc[i] = wfc[i] / sum
+		}
+	}
+
+	d := 0.0
+	for i, p := range wfc {
+		d += p * math.Log(p / bgDistr[i])
+	}
+	d /= math.Log(float64(len(wfc)))
+
+	score := d
 	if UseGapPenalty {
 		return score * GetWeightedGapPenalty(col, seqWeights)
 	}
