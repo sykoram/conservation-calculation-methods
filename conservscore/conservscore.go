@@ -25,7 +25,6 @@ var ifile string
 var ofile string
 
 var methodId string
-var window int
 var validLineRegex = "^(\\d+)\\t(-?\\d+(?:\\.\\d+)?)\\t([A-Z\\-]+)$" // matches line <colNum>\t<score>\t<msaCol>
 var msaCaptureGroup = 3  // which group should be captured (first is 1; 0 is the whole match)
 
@@ -37,7 +36,7 @@ func init() {
 	flag.StringVar(&ofile, "o", "", "output file path (gzipped if with .gz extension) (required)")
 	flag.StringVar(&methodId, "m", "", fmt.Sprintf("conservation calculation method (required) %s", GetMethodNames()))
 
-	flag.IntVar(&window, "w", 0, "window size (number of residues on each side included in the window)")
+	flag.IntVar(&WindowSize, "w", 0, "window size (number of residues on each side included in the window)")
 	flag.StringVar(&validLineRegex, "r", validLineRegex, "regex that matches a valid line where a MSA column is")
 	flag.IntVar(&msaCaptureGroup, "g", msaCaptureGroup, "capture group of the valid-line regex -r (0 is the whole match; 1st group is 1)")
 }
@@ -105,8 +104,8 @@ func main() {
 		}
 	}
 
-	if window > 0 {
-		scores = WindowScores(scores, window, WindowLam)
+	if WindowSize > 0 {
+		scores = WindowScores(scores, WindowSize, WindowLam)
 	}
 
 	for i, col := range msaCols {

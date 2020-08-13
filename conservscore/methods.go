@@ -34,7 +34,7 @@ var Pseudocount = 0.000001  // 10e-6
 //var Pseudocount = 0.0000001  // xxx 10e-7
 var MaxGapRatio = .30
 var UseGapPenalty = true
-//var WindowSize = 3  // 0 for no window scores calculation
+var WindowSize = 0  // 0 for no window scores calculation
 var WindowLam = 0.5
 /*
 Matrix made by matblas from blosum62.iij,
