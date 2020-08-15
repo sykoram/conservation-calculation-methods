@@ -71,6 +71,8 @@ time YOUR_COMMAND 2>&1 | tee log/test.log
 | Relative entropy (w3)          | 72.0         | 76.0         |
 | Jensen-Shannon divergence      | 73.4         | 77.5         |
 | Jensen-Shannon divergence (w3) | 72.2         | 75.6         |
+| Sum-of-pairs measure           | 72.4         | 76.4         |
+| Sum-of-pairs measure (w3)      | 71.9         | 75.2         |
 
 w3 = 3 residues on either side included in the window
 
