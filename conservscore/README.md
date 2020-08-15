@@ -33,7 +33,7 @@ Available methods:
 - Shannon entropy of residue properties: `property-entropy`
 - relative entropy (Kullback–Leibler divergence): `relative-entropy`
 - Jensen-Shannon divergence: `jensen-shannon-divergence`
-- sum-of-pair measure: `sum-of-pairs`
+- sum-of-pairs measure: `sum-of-pairs`
 
 The default similarity matrix and background distribution is BLOSUM62.
 
