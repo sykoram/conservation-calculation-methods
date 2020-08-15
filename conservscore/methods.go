@@ -25,6 +25,7 @@ var Methods = map[string]MethodFunc{
 	"property-entropy": ShannonPropertyEntropy,
 	"relative-entropy": RelativeEntropy,
 	"jensen-shannon-divergence": JensenShannonDivergence,
+	"sum-of-pairs": SumOfPairs,
 }
 
 var AminoAcids = []Aa{'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V', '-'}
@@ -202,6 +203,41 @@ func JensenShannonDivergence(col MsaColumn, simMatrix SimilarityMatrix, bgDistr 
 	d /= 2
 
 	score := d
+	if UseGapPenalty {
+		return score * GetWeightedGapPenalty(col, seqWeights)
+	}
+	return score
+}
+
+/*
+Sum the similarity matrix values for all pairs in the column.
+This method is similar to those proposed in Valdar 02. bg_distr is ignored.
+Note: the score can be >1
+*/
+func SumOfPairs(col MsaColumn, simMatrix SimilarityMatrix, bgDistr []float64, seqWeights []float64) float64 {
+	sum := 0.0
+	maxSum := 0.0
+
+	for i, aai := range col {
+		if aai == '-' {
+			continue
+		}
+		for j, aaj := range col {
+			if j <= i || aaj == '-' {
+				continue
+			}
+			sum += seqWeights[i] * seqWeights[j] * float64(simMatrix[AaToIndex[aai]][AaToIndex[aaj]])
+			maxSum += seqWeights[i] * seqWeights[j]
+		}
+	}
+
+	if maxSum != 0 {
+		sum /= maxSum
+	} else {
+		sum = 0
+	}
+
+	score := sum
 	if UseGapPenalty {
 		return score * GetWeightedGapPenalty(col, seqWeights)
 	}
