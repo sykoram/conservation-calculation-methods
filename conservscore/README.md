@@ -52,3 +52,11 @@ Flag `-g` sets a capture group. It is an integer: 0 is the whole match, 1 is the
 ```sh
 ./conservscore-dir.sh -i INPUT_DIR -o OUTPUT_DIR -m METHOD [-w WINDOW]
 ```
+
+## Sources
+
+Some methods and supporting functions were implemented according to the following paper and its supplementary data:
+
+Capra JA and Singh M.
+Predicting functionally important residues from sequence conservation.
+Bioinformatics. 23(15): 1875-1882, 2007.
