@@ -43,7 +43,7 @@ If the input file name has a `.gz` extension, it is automatically decompressed. 
 
 By default, the MSA column is extracted from a line in format `<colNum>\t<score>\t<msaCol>` where `<colNum>` is an integer, `<score>` is a floating point number and `<msaCol>` is a sequence of letters or dashes.
 
-To use this program with different formats, a custom regular expression and a capture group can be defined:
+To use this program with different formats, a custom regular expression and a capture group can be defined: \
 Flag `-r` sets a regular expression. \
 Flag `-g` sets a capture group. It is an integer: 0 is the whole match, 1 is the first capture group of the regular expression.
 
@@ -57,6 +57,6 @@ Flag `-g` sets a capture group. It is an integer: 0 is the whole match, 1 is the
 
 Some methods and supporting functions were implemented according to the following paper and its supplementary data:
 
-Capra JA and Singh M.
-Predicting functionally important residues from sequence conservation.
-Bioinformatics. 23(15): 1875-1882, 2007.
+*Capra JA and Singh M. \
+Predicting functionally important residues from sequence conservation. \
+Bioinformatics. 23(15): 1875-1882, 2007.*
