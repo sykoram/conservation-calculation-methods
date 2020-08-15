@@ -45,6 +45,15 @@ The p2rank-eval-method script helps with the whole process:
 ./p2rank-eval-method.sh -m METHOD [-w WINDOW]
 ```
 
+Available methods: 
+- Shannon entropy of residues: `shannon-entropy`
+- Shannon entropy of residue properties: `property-entropy`
+- relative entropy (Kullback–Leibler divergence): `relative-entropy`
+- Jensen-Shannon divergence: `jensen-shannon-divergence`
+- sum-of-pair measure: `sum-of-pairs`
+
+If the window is greater than 0, a score of a column is affected by nearby column scores. (the value is a number of residues on either side included in the window)
+
 By default, the window size is 0; dataset chen11 is used for training and coach420(mlig) for evaluation. You can change some options in the scripts or in the conservscore program.
 
 [Usage for conservscore program](conservscore/README.md#usage)
