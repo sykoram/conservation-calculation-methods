@@ -99,6 +99,36 @@ This configuration was used:
 The only difference between the configurations of default and custom conservation files is that the default conservation files were probably calculated using Jensen-Shannon divergence, window size of 3 and pseudocount of 10e-7.
 
 
+## Results
+
+The following table shows the results of the tests. The numbers are always an average score of 10 runs (each with a different seed). This score was produced by P2Rank. \
+Shannon entropy means Shannon entropy of residues, and Property entropy means Shannon entropy of residue properties. \
+By default, the window size is 0 (no window), the w3 indicates window size of 3 residues on each side.
+
+| Model / Method                 | DCA(4.0) [0] | DCA(4.0) [2] |
+| ------------------------------ | ------------ | ------------ |
+| **Without conservation**       | **68.3**     | **72.6**     |
+| **Default conservation files** | **72.0**     | **75.4**     |
+| Shannon entropy                | 72.2         | 76.5         |
+| Shannon entropy (w3)           | 71.6         | 75.1         |
+| property entropy               | 72.7         | 76.3         |
+| property entropy (w3)          | 71.9         | 75.3         |
+| **relative entropy**           | **73.7**     | **77.8**     |
+| relative entropy (w3)          | 72.0         | 76.0         |
+| **Jensen-Shannon divergence**  | **73.4**     | **77.5**     |
+| Jensen-Shannon divergence (w3) | 72.2         | 75.6         |
+| sum-of-pairs measure           | 72.4         | 76.4         |
+| sum-of-pairs measure (w3)      | 71.9         | 75.2         |
+
+The results show that P2Rank prediction is generally improved when using conservation.
+
+Both relative entropy and Jensen-Shannon divergence performed better than other tested methods, but most importantly better than using the default conservation files. Relative entropy has a slightly better score than Jensen-Shannon divergence.
+
+Using the window definitely lowers the score (at least window size of 3). In my opinion, the reason might be that this window is sequential, however P2Rank uses its own spacial window that is more important for the pocket prediction.
+
+**In conclusion, relative entropy (or Jensen-Shannon divergence) without a window can be used to improve P2Rank prediction.**
+
+
 
 
 
