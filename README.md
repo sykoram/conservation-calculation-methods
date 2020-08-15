@@ -12,6 +12,7 @@ This project is for [Matfyz Summer of Code 2020 (cz)](https://d3s.mff.cuni.cz/ms
 - [Background](#background)
 - [Setup](#setup)
 - [Usage](#usage)
+- [Evaluation](#evaluation)
 - [Results](#results)
 ## Background
 
@@ -65,45 +66,39 @@ time YOUR_COMMAND 2>&1 | tee log/test.log
 ```
 
 
+## Evaluation
 
-## Results
+To evaluate the impact of different methods (or configurations) on P2Rank prediction, the following tests were made:
+1. without conservation files
+2. with default conservation files
+3. with custom conservation files recalculated using a specified method and the window size of 0 and 3. \
+   methods:
+   - Shannon entropy of residues
+   - Shannon entropy of residue properties
+   - relative entropy (Kullback–Leibler divergence)
+   - Jensen-Shannon divergence
+   - sum-of-pair measure
 
-| Model / Method                 | DCA(4.0) [0] | DCA(4.0) [2] |
-| ------------------------------ | ------------ | ------------ |
-| Without conservation           | 68.3         | 72.6         |
-| Default conservation files     | 72.0         | 75.4         |
-| Shannon entropy                | 72.2         | 76.5         |
-| Shannon entropy (w3)           | 71.6         | 75.1         |
-| Property entropy               | 72.7         | 76.3         |
-| Property entropy (w3)          | 71.9         | 75.3         |
-| Relative entropy               | 73.7         | 77.8         |
-| Relative entropy (w3)          | 72.0         | 76.0         |
-| Jensen-Shannon divergence      | 73.4         | 77.5         |
-| Jensen-Shannon divergence (w3) | 72.2         | 75.6         |
-| Sum-of-pairs measure           | 72.4         | 76.4         |
-| Sum-of-pairs measure (w3)      | 71.9         | 75.2         |
-
-w3 = 3 residues on either side included in the window
-
-Shannon entropy = Shannon entropy of residues \
-Property entropy = Shannon entropy of residue properties
-
-Following configuration was used:
+This configuration was used:
 - P2Rank:
-  - configuration file: config/conservation (not for the test without conservation)
+  - config file: config/conservation (if with conservation files)
   - traineval training dataset: chen11.ds
   - traineval evaluation dataset: coach420(mlig).ds
   - loop: 10 (trains 10 models, each with a different seed)
   - seed: 42 (first seed)
   - rf_trees: 200
-- conservscore: (not used for the default conservation files)
+- conservscore: (only for the custom conservation files)
   - pseudocount: 10e-6 (0.000001)
   - use sequence weights: true
   - max. gap percentage: 30%
   - use gap penalty: true
+  - similarity matrix and background distribution: BLOSUM62
   - window lam: 0.5
   - replace negative scores with 0: true
-  - similarity matrix and background distribution: BLOSUM62 (some methods do not use this)
+
+The only difference between the configurations of default and custom conservation files is that the default conservation files were probably calculated using Jensen-Shannon divergence, window size of 3 and pseudocount of 10e-7.
+
+
 
 
 
