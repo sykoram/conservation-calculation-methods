@@ -14,6 +14,9 @@ This project is for [Matfyz Summer of Code 2020 (cz)](https://d3s.mff.cuni.cz/ms
 - [Usage](#usage)
 - [Evaluation](#evaluation)
 - [Results](#results)
+- [Sources](#sources)
+
+
 ## Background
 
 The function of proteins depends on their interactions with other molecules. Really important is an interaction between proteins and small molecules (=ligands). Lots of today's drugs are small molecules, which inhibit the function of some protein by binding to its active site.
@@ -129,6 +132,13 @@ Using the window definitely lowers the score (at least window size of 3). In my 
 **In conclusion, relative entropy (or Jensen-Shannon divergence) without a window can be used to improve P2Rank prediction.**
 
 
+## Sources
+
+Some methods and supporting functions were implemented according to the following paper and its supplementary data:
+
+*Capra JA and Singh M. \
+Predicting functionally important residues from sequence conservation. \
+Bioinformatics. 23(15): 1875-1882, 2007.*
 
 
 
