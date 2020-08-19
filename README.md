@@ -65,7 +65,7 @@ By default, the window size is 0; dataset chen11 is used for training and coach4
 Tip: to measure the duration of the execution of a command/script/program and to print its output to both the terminal and a log file, use:
 
 ```sh
-time YOUR_COMMAND 2>&1 | tee log/test.log
+time SOME_COMMAND 2>&1 | tee log/test.log
 ```
 
 
@@ -76,21 +76,21 @@ To evaluate the impact of different methods (or configurations) on P2Rank predic
 2. with default conservation files
 3. with custom conservation files recalculated using a specified method and the window size of 0 and 3. \
    methods:
-   - Shannon entropy of residues
-   - Shannon entropy of residue properties
-   - relative entropy (Kullback–Leibler divergence)
-   - Jensen-Shannon divergence
-   - sum-of-pair measure
+   - [Shannon entropy][SE] of residues: The most simple and commonly used method.
+   - [Shannon entropy][SE] of residue properties: Amino acids are grouped by biochemical similarities.
+   - [relative entropy (Kullback–Leibler divergence)][RE]: Takes into account background distribution (how rare an amino acid is).
+   - [Jensen-Shannon divergence][JSD]: Based on the relative entropy, symmetric and has finite value.
+   - sum-of-pairs measure: Uses a similarity matrix (takes into account how similar amino acids are).
 
 This configuration was used:
-- P2Rank:
+- [P2Rank]:
   - config file: config/conservation (if with conservation files)
   - traineval training dataset: chen11.ds
   - traineval evaluation dataset: coach420(mlig).ds
   - loop: 10 (trains 10 models, each with a different seed)
   - seed: 42 (first seed)
   - rf_trees: 200
-- conservscore: (only for the custom conservation files)
+- [conservscore]: (only for the custom conservation files)
   - pseudocount: 10e-6 (0.000001)
   - use sequence weights: true
   - max. gap percentage: 30%
@@ -104,9 +104,14 @@ The only difference between the configurations of default and custom conservatio
 
 ## Results
 
-The following table shows the results of the tests. The numbers are always an average score of 10 runs (each with a different seed). This score was produced by P2Rank. \
+The following table shows the results of the tests. 
+
+DCA(4.0) metric is used: the pocket prediction is considered successful if the distance between the pocket center and any ligand atom is less then (or equal to) 4 Å. \
+[0] denotes Top-(n+0) and [2] Top-(n+2) success rate where n is the number of ligands of a protein. In order to get Top-(n+0) and Top-(n+2) success rate of 100%, the predicted pockets have to be within the first n and n+2 positions, respectively. \
+These numbers are always an average score of 10 runs (each with a different seed), and were produced by P2Rank.
+
 Shannon entropy means Shannon entropy of residues, and Property entropy means Shannon entropy of residue properties. \
-By default, the window size is 0 (no window), the w3 indicates window size of 3 residues on each side.
+By default, the window size is 0 (no window), the w3 denotes window size of 3 residues on each side.
 
 | Model / Method                 | DCA(4.0) [0] | DCA(4.0) [2] |
 | ------------------------------ | ------------ | ------------ |
@@ -146,3 +151,7 @@ Bioinformatics. 23(15): 1875-1882, 2007.*
 [P2Rank]: https://github.com/rdk/p2rank
 [MFF]: https://www.mff.cuni.cz/en
 [conservscore]: ./conservscore
+
+[SE]: https://en.wikipedia.org/wiki/Entropy_(information_theory)
+[RE]: https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence
+[JSD]: https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
