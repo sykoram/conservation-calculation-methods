@@ -128,7 +128,7 @@ By default, the window size is 0 (no window), the w3 denotes window size of 3 re
 | sum-of-pairs measure           | 72.4         | 76.4         |
 | sum-of-pairs measure (w3)      | 71.9         | 75.2         |
 
-The results show that P2Rank prediction is generally improved when using conservation.
+The results show that P2Rank prediction is generally improved by including the conservation scores.
 
 Both relative entropy and Jensen-Shannon divergence performed better than other tested methods, but most importantly better than using the default conservation files. Relative entropy has a slightly better score than Jensen-Shannon divergence.
 
