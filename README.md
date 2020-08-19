@@ -139,11 +139,18 @@ Using the window definitely lowers the score (at least window size of 3). In my 
 
 ## Sources
 
-Some methods and supporting functions were implemented according to the following paper and its supplementary data:
+Capra JA and Singh M. \
+[Predicting functionally important residues from sequence conservation](https://doi.org/10.1093/bioinformatics/btm270). \
+Bioinformatics. 23(15): 1875-1882, 2007.
 
-*Capra JA and Singh M. \
-Predicting functionally important residues from sequence conservation. \
-Bioinformatics. 23(15): 1875-1882, 2007.*
+Radoslav Krivák and David Hoksza. \
+[P2Rank: machine learning based tool for rapid and accurate prediction of ligand binding sites from protein structure](https://doi.org/10.1186/s13321-018-0285-8). \
+Journal of Cheminformatics. Aug 2018
+
+Lukáš Jendele and Radoslav Krivák and Petr Škoda and Marian Novotný and David Hoksza. \
+[PrankWeb: a web server for ligand binding site prediction and visualization](https://doi.org/10.1093/nar/gkz424). \
+Nucleic Acids Research. May 2019
+
 
 
 
