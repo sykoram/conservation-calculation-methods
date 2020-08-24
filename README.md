@@ -184,8 +184,6 @@ Nucleic Acids Research. May 2019
 
 
 
-
-
 [P2Rank]: https://github.com/rdk/p2rank
 [MFF]: https://www.mff.cuni.cz/en
 [conservscore]: ./conservscore
