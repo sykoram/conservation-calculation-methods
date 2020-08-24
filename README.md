@@ -159,8 +159,6 @@ Imp. is the improvement over using the default conservation files.
 | sum-of-pairs measure           | 72.4         | +0,6%     | 76.4         | +1,3%     |
 | sum-of-pairs measure (w3)      | 71.9         | -0,1%     | 75.2         | -0,3%     |
 
-[COMMENT]: # (| Without conservation | 68.3 | -5,1% | 72.6 | -3,7% |)
-
 The results show that P2Rank prediction is generally improved by including the conservation scores.
 
 Both relative entropy and Jensen-Shannon divergence performed better than other tested methods, but most importantly better than using the default conservation files. Relative entropy has a slightly better score than Jensen-Shannon divergence.
