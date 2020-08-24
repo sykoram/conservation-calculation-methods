@@ -142,20 +142,24 @@ These numbers are always an average score of 10 runs (each with a different seed
 Shannon entropy means Shannon entropy of residues, and Property entropy means Shannon entropy of residue properties. \
 By default, the window size is 0 (no window), the w3 denotes window size of 3 residues on each side.
 
-| Model / Method                 | DCA(4.0) [0] | DCA(4.0) [2] |
-| ------------------------------ | ------------ | ------------ |
-| **Without conservation**       | **68.3**     | **72.6**     |
-| **Default conservation files** | **72.0**     | **75.4**     |
-| Shannon entropy                | 72.2         | 76.5         |
-| Shannon entropy (w3)           | 71.6         | 75.1         |
-| property entropy               | 72.7         | 76.3         |
-| property entropy (w3)          | 71.9         | 75.3         |
-| **relative entropy**           | **73.7**     | **77.8**     |
-| relative entropy (w3)          | 72.0         | 76.0         |
-| **Jensen-Shannon divergence**  | **73.4**     | **77.5**     |
-| Jensen-Shannon divergence (w3) | 72.2         | 75.6         |
-| sum-of-pairs measure           | 72.4         | 76.4         |
-| sum-of-pairs measure (w3)      | 71.9         | 75.2         |
+Imp. is the improvement over using the default conservation files.
+
+| Model / Method                 | DCA(4.0) [0] | Imp.      | DCA(4.0) [2] | Imp.      |
+| ------------------------------ | ------------ | --------- | ------------ | --------- |
+| **Without conservation**       | **68.3**     |           | **72.6**     |           |
+| **Default conservation files** | **72.0**     | **0,0%**  | **75.4**     | **0,0%**  |
+| Shannon entropy                | 72.2         | +0,3%     | 76.5         | +1,5%     |
+| Shannon entropy (w3)           | 71.6         | -0,6%     | 75.1         | -0,4%     |
+| property entropy               | 72.7         | +1,0%     | 76.3         | +1,2%     |
+| property entropy (w3)          | 71.9         | -0,1%     | 75.3         | -0,1%     |
+| **relative entropy**           | **73.7**     | **+2,4%** | **77.8**     | **+3,2%** |
+| relative entropy (w3)          | 72.0         | 0,0%      | 76.0         | +0,8%     |
+| **Jensen-Shannon divergence**  | **73.4**     | **+1,9%** | **77.5**     | **+2,8%** |
+| Jensen-Shannon divergence (w3) | 72.2         | +0,3%     | 75.6         | +0,3%     |
+| sum-of-pairs measure           | 72.4         | +0,6%     | 76.4         | +1,3%     |
+| sum-of-pairs measure (w3)      | 71.9         | -0,1%     | 75.2         | -0,3%     |
+
+[COMMENT]: # (| Without conservation | 68.3 | -5,1% | 72.6 | -3,7% |)
 
 The results show that P2Rank prediction is generally improved by including the conservation scores.
 
@@ -180,6 +184,13 @@ Lukáš Jendele and Radoslav Krivák and Petr Škoda and Marian Novotný and Dav
 [PrankWeb: a web server for ligand binding site prediction and visualization](https://doi.org/10.1093/nar/gkz424). \
 Nucleic Acids Research. May 2019
 
+
+## TODO
+- tabulka - sloupec - % zlepšení oproti baseline
+- kdyz se vysvetli jak funguji ty metody konzervovanosti, co tam jsou, tak by melo byt receno, jak je pocitan ten baseline (pro detaily se obratte, pokud je to nutne, na Petra Skodu nebo Rada Krivaka)
+- bylo by fajn tam nekde mit sekci o implementaci, ted nemyslim jako popsat kod, ale popsat workflow, tj. to, ze konzervace je ulozena v nejakem filu a co udelate Vas program, aby se pouzila prislusna metoda konzervovanosti
+- anglictina - frazing
+- clanek?
 
 
 
