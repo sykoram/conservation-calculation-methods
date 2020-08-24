@@ -10,6 +10,7 @@ This project is for [Matfyz Summer of Code 2020 (cz)](https://d3s.mff.cuni.cz/ms
 ## Table of Contents
 
 - [Background](#background)
+- [How it works](#how-it-works)
 - [Setup](#setup)
 - [Usage](#usage)
 - [Evaluation](#evaluation)
@@ -26,6 +27,34 @@ Detection of these active sites is experimentally difficult, so there are variou
 The main goal of this project is to implement various known conservation calculation methods, and evaluate their impact on P2Rank prediction.
 
 [COMMENT]: # (Rewritten: Funkce proteinů je odvozena od jejich interakce s ostatními molekulami. Velice důležitý typ vazby je mezi proteiny a malými molekulami, tzv. ligandy. Např. naprostá většina současných léčiv jsou právě malé molekuly, které inhibují funkci některého proteinu tím, že se váží do jeho aktivního místa a zabraňují tak šíření informace. Detekce těchto aktivních míst je ovšem experimentálně velice náročná a proto existují počítačové metody pro predikci aktivních míst. Jedna z nejlepších metod pro predikci protein-ligand aktivních míst z proteinové struktury, pojmenovaná P2Rank, byla vyvinuta na MFF UK. Je známo, že aminokyseliny aktivních míst proteinu jsou evolučně konzervovaná více než ostatní aminokyseliny a proto byla do P2Ranku přidána možnost měření evoluční konzervovanosti a využití této informace v rámci predikce. Tento přístup vskutku vedl ke zlepšení schopnosti predikce, nicméně byla použita pouze jedna metoda výpočtu konzervovanosti. Cílem projektu je tedy implementovat různé známě přístupy k výpočtu evoluční konzervovanosti a evaluovat jejich vliv na predikční schopnosti metody P2Rank. Stávající verze algoritmu je přístupná i jako webový portál na adrese [www.prankweb.cz].)
+
+
+## How it works
+
+Each [P2Rank dataset](https://github.com/rdk/p2rank-datasets) should have files containing conservation scores in `<dataset>/conservation/e5i1/scores`. The files look like this:
+
+```
+# /tmp/file4i81hc -- js_divergence - window_size: 3 - background: blosum62 - seq. weighting: True - gap penalty: 1 - normalized: False
+# align_column_number	score	column
+
+0	-1000.00000	-------------------M----M--M-------------M-------------M--
+1	0.57284	-M-----------MMMMMMAMMMMVMMTMMMMMMMMMMMM-TMMMMMMMMMMMMMPMM
+2	0.52533	-TMMMMM--MMMMQQQQQQQLLFFQYLFFLLLLFYLLLLL-LLLLLLLLLLLLLLLLL
+3	0.62155	DVSSSSSSSSSSSDDDDDDDDDDDDDDDDDDDDDDDDDDD-DDDDDDDDDDDDDDDDD
+4	0.54686	ASIIIIVIIIILFAAAAAAAAAIAAAAAVAAAAAAAAAAA-VAAAAAAAAAAAAAAAA
+```
+
+In this project, these files are used as input files for [conservscore]. This program extracts the MSA columns, calculates their conservation scores using a specified method and window size (both are passed as arguments to conservscore), and saves the scores to an output file that looks similar to the input file:
+
+```
+0	0.00000	-------------------M----M--M-------------M-------------M--
+1	0.51554	-M-----------MMMMMMAMMMMVMMTMMMMMMMMMMMM-TMMMMMMMMMMMMMPMM
+2	0.46502	-TMMMMM--MMMMQQQQQQQLLFFQYLFFLLLLFYLLLLL-LLLLLLLLLLLLLLLLL
+3	0.71309	DVSSSSSSSSSSSDDDDDDDDDDDDDDDDDDDDDDDDDDD-DDDDDDDDDDDDDDDDD
+4	0.59215	ASIIIIVIIIILFAAAAAAAAAIAAAAAVAAAAAAAAAAA-VAAAAAAAAAAAAAAAA
+```
+
+Next, [P2Rank] loads these files together with its regular input files, and they are used for training of new models and their evaluation.
 
 
 ## Setup
